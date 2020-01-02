@@ -4,37 +4,7 @@ import (
 	"fmt"
 	"math/rand"
 	"time"
-	"unicode"
 )
-
-func choice(s []nounPhrase) nounPhrase {
-	l := len(s)
-	if l == 0 {
-		return nounPhrase{}
-	}
-	return s[rand.Intn(l)]
-}
-
-func choiceString(s []string) string {
-	l := len(s)
-	return s[rand.Intn(l)]
-}
-
-func choiceList(arr [][]string) []string {
-	l := len(arr)
-	return arr[rand.Intn(l)]
-}
-
-func randBoolChance(n int) bool {
-	if rand.Intn(100) < n {
-		return true
-	}
-	return false
-}
-
-func capitalize(s string) string {
-	return string(string(unicode.ToUpper(rune(s[0]))) + s[1:])
-}
 
 func printRandomStory() {
 	var localActors = []nounPhrase{
