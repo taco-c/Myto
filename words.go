@@ -120,6 +120,11 @@ var (
 		"bowl",
 		"book",
 		"knife",
+		"hammer",
+		"pen",
+		"scroll",
+		"codex",
+		"boat",
 	}
 
 	// In the beginning there is beautiful Falcon.
@@ -293,7 +298,6 @@ var (
 		"appears",
 		"arrives",
 		"becomes",
-		"belongs",
 		"collapses",
 		"consists",
 		"coughes",
@@ -439,6 +443,10 @@ var (
 		"smells",
 		"softens",
 		"spreads",
+	}
+
+	nomAccDatVerbs = []string{
+		"belongs",
 	}
 
 	prepositions = []string{
