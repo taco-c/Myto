@@ -4,6 +4,7 @@ import (
 	"flag"
 	"fmt"
 	"math/rand"
+	"os"
 	"time"
 )
 
@@ -220,8 +221,8 @@ func printRandomStory() {
 
 func main() {
 	// Deal with flags
-	var doPrintStory *bool = flag.Bool("story", false, "Print a story.")
-	var doPrintSentence *bool = flag.Bool("sentence", false, "Print a story.")
+	var doPrintStory *bool = flag.Bool("m", false, "Print a mythological story")
+	var doPrintSentence *bool = flag.Bool("s", false, "Print a random sentence")
 	flag.Parse()
 
 	rand.Seed(time.Now().UnixNano())
@@ -232,6 +233,9 @@ func main() {
 			ph := randVerbPhrase()
 			fmt.Printf("%s.\n", ph)
 		}
+	} else {
+		fmt.Printf("Usage of %v:\n", os.Args[0])
+		flag.PrintDefaults()
 	}
 
 }
