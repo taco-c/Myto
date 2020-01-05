@@ -1,6 +1,7 @@
 package main
 
 import (
+	"flag"
 	"fmt"
 	"math/rand"
 	"time"
@@ -218,11 +219,19 @@ func printRandomStory() {
 }
 
 func main() {
-	rand.Seed(time.Now().UnixNano())
-	// printRandomStory()
+	// Deal with flags
+	var doPrintStory *bool = flag.Bool("story", false, "Print a story.")
+	var doPrintSentence *bool = flag.Bool("sentence", false, "Print a story.")
+	flag.Parse()
 
-	for i := 0; i < 1; i++ {
-		ph := randVerbPhrase()
-		fmt.Printf("%s.\n", ph)
+	rand.Seed(time.Now().UnixNano())
+	if *doPrintStory {
+		printRandomStory()
+	} else if *doPrintSentence {
+		for i := 0; i < 1; i++ {
+			ph := randVerbPhrase()
+			fmt.Printf("%s.\n", ph)
+		}
 	}
+
 }
