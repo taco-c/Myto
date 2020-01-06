@@ -8,174 +8,81 @@ import (
 	"time"
 )
 
-func printRandomStory() {
-	var localActors = []nounPhrase{
-		randNounPhrase(),
-		randNounPhrase(),
+func printRandomStory(storyLength, verseLength int) {
+	// var newActor, actor, previousActor nounPhrase
+	// var parents [2]nounPhrase
+	var newActorChance float32 = 50.0
+	var newItemChance float32 = 20.0
+	var newLocationChance float32 = 20.0
+	var localActors = []nounPhrase{}
+	for i := 0; i < 1+rand.Intn(2); i++ {
+		localActors = append(localActors, randActorPhrase())
 	}
+	var localItems = []nounPhrase{}
+	var localLocations = []nounPhrase{}
 
-	fmt.Printf("In the beginning there is the %s and the %s.\n",
-		localActors[0],
-		localActors[1],
-	)
+	// if len(localActors) == 2 {
+	// 	fmt.Printf("In the beginning there is the %s and the %s.\n",
+	// 		localActors[0],
+	// 		localActors[1],
+	// 	)
+	// } else {
+	// 	fmt.Printf("In the beginning there is the %s.\n",
+	// 		localActors[0],
+	// 	)
+	// }
 
-	var localItems = []nounPhrase{
-		randItemPhrase(),
-		// randItemPhrase(),
-		// randItemPhrase(),
-	}
-
-	var localLocations = []nounPhrase{
-		randLocationPhrase(),
-		// randLocationPhrase(),
-		// randLocationPhrase(),
-	}
-
-	var newActor, actor, previousActor nounPhrase
-	var newActorChance int = 25
-	var storySize int = 1 + rand.Intn(1)
-	var verseSize int = 4 + rand.Intn(16)
-	var n int
-	var options []verbPhrase
-	var parents [2]nounPhrase
-	for i := 0; i < storySize; i++ {
-		for j := 0; j < verseSize; j++ {
-			if i == 0 && j == 0 {
-				j++
-				continue
+	for i := 0; i < storyLength; i++ {
+		for j := 0; j < verseLength; j++ {
+			// if i == 0 && j == 0 {
+			// 	continue // Compensation for the opening line above.
+			// }
+			if randChance(newActorChance) {
+				localActors = append(localActors, randActorPhrase())
+				newActorChance *= 0.75
 			}
-			previousActor = actor
-			if randBoolChance(newActorChance) {
-				newActorChance -= newActorChance / 4
-				if newActorChance <= 0 {
-					newActorChance = 0
-				}
-				newActor = randNounPhrase()
-				// Parents
-				if len(localActors) >= 2 || randBoolChance(95) {
-					parents[0] = choice(localActors)
-					for ok := true; ok; ok = parents[0] == parents[1] {
-						parents[1] = choice(localActors)
-					}
-					fmt.Printf("Then the %s is born from the %s, and the %s.\n",
-						newActor,
-						parents[0],
-						parents[1],
-					)
-
-				} else {
-					fmt.Printf("Then the %s is born from the %s.\n",
-						newActor,
-						choice(localActors),
-					)
-				}
-				localActors = append(localActors, newActor)
-				j++
-				actor = newActor
-			} else {
-				if randBoolChance(25) && previousActor != (nounPhrase{}) {
-					actor = previousActor
-				} else {
-					actor = choice(localActors)
-				}
+			if randChance(newItemChance) {
+				localItems = append(localItems, randItemPhrase())
+				newItemChance *= 0.75
 			}
+			if randChance(newLocationChance) {
+				localLocations = append(localLocations, randLocationPhrase())
+				newLocationChance *= 0.75
+			}
+			// previousActor = actor
+			// if randChance(newActorChance) {
+			// 	newActorChance -= newActorChance / 4
+			// 	newActor = randActorPhrase()
+			// 	// Parents
+			// 	if len(localActors) <= 1 || randChance(5) {
+			// 		fmt.Printf("Then the %s is born from the %s.\n",
+			// 			newActor,
+			// 			choice(localActors),
+			// 		)
+			// 	} else {
+			// 		parents[0] = choice(localActors)
+			// 		for ok := true; ok; ok = parents[0] == parents[1] {
+			// 			parents[1] = choice(localActors)
+			// 		}
+			// 		fmt.Printf("Then the %s is born from the %s, and the %s.\n",
+			// 			newActor,
+			// 			parents[0],
+			// 			parents[1],
+			// 		)
+			// 	}
+			// 	j++
+			// 	localActors = append(localActors, newActor)
+			// 	actor = newActor
+			// } else {
+			// 	if randChance(25) && previousActor != (nounPhrase{}) {
+			// 		actor = previousActor
+			// 	} else {
+			// 		actor = choice(localActors)
+			// 	}
+			// }
+
 			// TODO: And then xxx (location) is discovered/built.
 
-			options = []verbPhrase{
-				// Intransitive verbs
-				verbPhrase{
-					verb: choiceString(intransVerbs),
-					nom:  actor,
-				},
-				verbPhrase{
-					verb:  choiceString(intransVerbs),
-					nom:   actor,
-					instr: choice(localActors),
-				},
-				verbPhrase{
-					verb:  choiceString(intransVerbs),
-					nom:   actor,
-					instr: choice(localItems),
-				},
-				verbPhrase{
-					verb:    choiceString(intransVerbs),
-					nom:     actor,
-					loc:     choice(localLocations),
-					locPrep: "at",
-				},
-				// Transitive verbs
-				verbPhrase{
-					verb: choiceString(transVerbs),
-					nom:  actor,
-					acc:  choice(localActors),
-				},
-				verbPhrase{
-					verb:  choiceString(transVerbs),
-					nom:   actor,
-					acc:   choice(localActors),
-					instr: choice(localActors),
-				},
-				verbPhrase{
-					verb:    choiceString(transVerbs),
-					nom:     actor,
-					acc:     choice(localActors),
-					instr:   choice(localActors),
-					loc:     nounPhrase{noun: "hand", qualifier: "its"},
-					locPrep: "in",
-				},
-				verbPhrase{
-					verb:  choiceString(transVerbs),
-					nom:   actor,
-					acc:   choice(localActors),
-					instr: choice(localItems),
-				},
-				verbPhrase{
-					verb:    choiceString(transVerbs),
-					nom:     actor,
-					acc:     choice(localActors),
-					loc:     choice(localLocations),
-					locPrep: "at",
-				},
-				verbPhrase{
-					verb:    choiceString(transVerbs),
-					nom:     actor,
-					acc:     choice(localActors),
-					loc:     choice(localLocations),
-					locPrep: "at",
-					instr:   choice(localActors),
-				},
-				verbPhrase{
-					verb:    choiceString(transVerbs),
-					nom:     actor,
-					acc:     choice(localActors),
-					loc:     choice(localLocations),
-					locPrep: "at",
-					instr:   choice(localItems),
-				},
-				verbPhrase{
-					verb: "gives",
-					nom:  actor,
-					acc:  choice(localItems),
-					dat:  choice(localActors),
-				},
-				verbPhrase{
-					verb: "feels",
-					nom:  actor,
-					acc:  nounPhrase{noun: choiceString(abstractStuff)},
-				},
-				verbPhrase{
-					verb: "thinks of",
-					nom:  actor,
-					acc:  nounPhrase{noun: choiceString(abstractStuff)},
-				},
-			}
-
-			var ph verbPhrase
-			for ok := true; ok; ok = ph.nom == ph.acc || ph.nom == ph.dat || ph.nom == ph.instr || ph.nom == ph.loc {
-				n = rand.Intn(len(options))
-				ph = options[n]
-			}
-			// fmt.Printf("%s.\n", ph.string())
 			fmt.Printf("%s.\n", randVerbPhraseFromContent(localActors, localItems, localLocations))
 
 			// if n == 4 {
@@ -198,17 +105,15 @@ func printRandomStory() {
 	}
 	fmt.Println("\nActors:")
 	for i, item := range localActors {
-		fmt.Printf("%2d %s\n", i+1, capitalize(item.String()))
+		fmt.Printf("%2d. %s\n", i+1, capitalize(item.String()))
 	}
-
 	fmt.Println("\nItems:")
 	for i, item := range localItems {
-		fmt.Printf("%2d %s\n", i+1, capitalize(item.String()))
+		fmt.Printf("%2d. %s\n", i+1, capitalize(item.String()))
 	}
-
 	fmt.Println("\nLocations:")
 	for i, item := range localLocations {
-		fmt.Printf("%2d %s\n", i+1, capitalize(item.String()))
+		fmt.Printf("%2d. %s\n", i+1, capitalize(item.String()))
 	}
 
 	// for _, item := range items {
@@ -223,15 +128,17 @@ func main() {
 	// Deal with flags
 	var doPrintStory *bool = flag.Bool("m", false, "Print a mythological story")
 	var doPrintSentence *bool = flag.Bool("s", false, "Print a random sentence")
+	var length *int = flag.Int("l", 1, "Length of mythology or number of random sentences to print")
+	var verseLength *int = flag.Int("v", 8, "Length of the verses of the mythology")
 	flag.Parse()
 
 	rand.Seed(time.Now().UnixNano())
+
 	if *doPrintStory {
-		printRandomStory()
+		printRandomStory(*length, *verseLength)
 	} else if *doPrintSentence {
-		for i := 0; i < 1; i++ {
-			ph := randVerbPhrase()
-			fmt.Printf("%s.\n", ph)
+		for i := 0; i < *length; i++ {
+			fmt.Printf("%s.\n", randVerbPhrase())
 		}
 	} else {
 		fmt.Printf("Usage of %v:\n", os.Args[0])

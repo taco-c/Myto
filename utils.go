@@ -13,7 +13,7 @@ func choice(arr []nounPhrase) nounPhrase {
 	return arr[rand.Intn(l)]
 }
 
-func choiceString(arr []string) string {
+func randWord(arr []string) string {
 	l := len(arr)
 	if l == 0 {
 		return ""
@@ -29,8 +29,8 @@ func choiceList(arr [][]string) []string {
 	return arr[rand.Intn(l)]
 }
 
-func randBoolChance(n int) bool {
-	if rand.Intn(100) < n {
+func randChance(n float32) bool {
+	if rand.Float32()*100 < n {
 		return true
 	}
 	return false

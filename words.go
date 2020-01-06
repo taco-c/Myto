@@ -3,61 +3,63 @@ package main
 var (
 	actors = []string{
 		// Animals
-		"sheep",     //
-		"ram",       //
-		"wether",    // Castrated male sheep or goat
-		"ewe",       //
-		"lamb",      //
-		"goat",      //
-		"billy",     // Male goat
-		"nanny",     // Female goat
-		"kid",       // Young goat
-		"cock",      // Male chicken
-		"hen",       //
-		"chick",     // Young chicken
-		"cockerel",  // Male young chicken
-		"pullet",    // Female young chicken
-		"dog",       //
-		"stud",      // Male dog
-		"bitch",     // Female dog
-		"puppy",     //
-		"cat",       //
-		"tomcat",    // Male cat
-		"gibcat",    // Castrated male cat
-		"mollycat",  // Female cat
-		"kitten",    //
-		"cow",       //
-		"bull",      // Uncastrated male cattle
-		"ox",        // Castrated male cattle
-		"calf",      //
-		"horse",     //
-		"stallion",  // Uncastrated male horse
-		"mare",      // Female horse
-		"filly",     // Female young horse
-		"donkey",    //
-		"jack",      // Male donkey
-		"jenny",     // Female donkey
-		"foal",      // Young donkey / young horse
-		"dove",      //
-		"goose",     //
-		"gander",    // Male goose
-		"gosling",   //
-		"bear boar", //
-		"bear sow",  //
-		"bear cub",  //
-		"pig",       //
-		"boar",      //
-		"sow pig",   //
-		"piglet",    //
-		"bird",      //
-		"fish",      //
-		"bat",       //
-		"seagull",   //
-		"eagle",     //
-		"hawk",      //
-		"tiercel",   // Male hawk
-		"hawk hen",  // Female hawk
-		"falcon",    //
+		"sheep",    //
+		"ram",      //
+		"wether",   // Castrated male sheep or goat
+		"ewe",      //
+		"lamb",     //
+		"goat",     //
+		"billy",    // Male goat
+		"nanny",    // Female goat
+		"kid",      // Young goat
+		"cock",     // Male chicken
+		"hen",      //
+		"chick",    // Young chicken
+		"cockerel", // Male young chicken
+		"pullet",   // Female young chicken
+		"dog",      //
+		"stud",     // Male dog
+		"bitch",    // Female dog
+		"puppy",    //
+		"cat",      //
+		"tomcat",   // Male cat
+		"gibcat",   // Castrated male cat
+		"mollycat", // Female cat
+		"kitten",   //
+		"cow",      //
+		"bull",     // Uncastrated male cattle
+		"ox",       // Castrated male cattle
+		"calf",     //
+		"horse",    //
+		"stallion", // Uncastrated male horse
+		"mare",     // Female horse
+		"filly",    // Female young horse
+		"donkey",   //
+		"jack",     // Male donkey
+		"jenny",    // Female donkey
+		"foal",     // Young donkey / young horse
+		"dove",     //
+		"goose",    //
+		"gander",   // Male goose
+		"gosling",  //
+		"bear",     //
+		"pig",      //
+		"boar",     //
+		"sow",      //
+		"piglet",   //
+		"bird",     //
+		"fish",     //
+		"bat",      //
+		"seagull",  //
+		"eagle",    //
+		"hawk",     //
+		"tiercel",  // Male hawk or falcon
+		"hawk",     //
+		"falcon",   //
+		"wolf",
+		"fox",
+		"deer",
+		"moose",
 		// Humanoids
 		"man",
 		"woman",
@@ -89,6 +91,7 @@ var (
 		"guardian",
 		"guard",
 	}
+
 	actoractors = [][]string{
 		{"a", "sheep", "sheep"},
 		{"a", "ram", "rams"},
@@ -125,19 +128,13 @@ var (
 		"scroll",
 		"codex",
 		"boat",
+		"cloak",
+		"hat",
+		"shoes",
+		"gloves",
+		"bag",
+		"sack",
 	}
-
-	// In the beginning there is beautiful Falcon.
-	// The beautiful Falcon thinks of delight near the beautiful Falcon.
-	// The beautiful Falcon is the symbol of friendship.
-
-	// In the beginning there is plain Seagull of Joy.
-	// The plain Seagull of Joy thinks of fascination.
-	// The plain Seagull of Joy joins itself.
-	// Then the delightful Potato comes.
-	// Then the delightful Potato sings, making the delightful Potato calm.
-	// The plain Seagull of Joy is the symbol of luxury.
-	// The delightful Potato is the symbol of pain.
 
 	abstractStuff = []string{
 		"love",
@@ -302,15 +299,12 @@ var (
 		"consists",
 		"coughes",
 		"cries",
-		"dies",
 		"disappears",
-		"emerges",
 		"exists",
 		"explodes",
 		"fades",
 		"falls",
 		"fasts",
-		"floats",
 		"flies",
 		"gallops",
 		"goes",
@@ -322,10 +316,7 @@ var (
 		"knocks",
 		"lasts",
 		"laughs",
-		"leads",
-		"leans",
 		"lies",
-		"listens",
 		"lives",
 		"looks",
 		"marches",
@@ -374,7 +365,6 @@ var (
 		"walks",
 		"wanders",
 		"waves",
-		"whirls",
 	}
 
 	transVerbs = []string{
@@ -421,7 +411,6 @@ var (
 		"punches",
 		"sees",
 		"pleases",
-		"teaches",
 		"tightens",
 		"pierces",
 		"prepares",
@@ -439,14 +428,17 @@ var (
 		"scolds",
 		"satisfies",
 		"slaps",
-		"wears",
 		"smells",
 		"softens",
-		"spreads",
 	}
 
 	nomAccDatVerbs = []string{
 		"belongs",
+		"teaches",
+	}
+
+	nomDatVerbs = []string{
+		"listens",
 	}
 
 	prepositions = []string{
@@ -482,5 +474,7 @@ var (
 		"festival",
 		"chamber",
 		"square",
+		"room",
+		"cliff",
 	}
 )

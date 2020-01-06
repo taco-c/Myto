@@ -46,14 +46,14 @@ func (ph nounPhrase) String() string {
 	return str
 }
 
-func randNounPhrase() nounPhrase {
-	noun := choiceString(actors)
+func randActorPhrase() nounPhrase {
+	noun := randWord(actors)
 	return randDescriptorsToNoun(noun)
 }
 
 func randDescriptorsToNoun(noun string) nounPhrase {
 	var qualifier, of, compound string
-	var chance int = 40
+	var chance float32 = 40.0
 
 	// forms := choiceList(actoractors)
 	// noun := noun{
@@ -61,47 +61,47 @@ func randDescriptorsToNoun(noun string) nounPhrase {
 	// 	sg: forms[1],
 	// 	pl: forms[2],
 	// }
-	if randBoolChance(chance) {
-		qualifier = choiceString(adjectives)
+	if randChance(chance) {
+		qualifier = randWord(adjectives)
 		chance /= 3
 	}
-	if randBoolChance(chance) {
-		of = choiceString(abstractStuff)
+	if randChance(chance) {
+		of = randWord(abstractStuff)
 	}
-	if randBoolChance(5) {
-		compound = choiceString(items)
+	if randChance(5) {
+		compound = randWord(items)
 	}
 
 	return nounPhrase{qualifier, compound, noun, of}
 }
 
 func randLocationPhrase() nounPhrase {
+	var chance float32 = 50.0
 	var ph = nounPhrase{
-		noun: choiceString(locations),
+		noun: randWord(locations),
 	}
-	var chance int = 50
-	if randBoolChance(chance) {
-		ph.of = choiceString(abstractStuff)
+	if randChance(chance) {
+		ph.of = randWord(abstractStuff)
 		chance /= 2
 	}
-	if randBoolChance(chance) {
-		ph.qualifier = choiceString(adjectives)
+	if randChance(chance) {
+		ph.qualifier = randWord(adjectives)
 	}
 
 	return ph
 }
 
 func randItemPhrase() nounPhrase {
+	var chance float32 = 75.0
 	var ph = nounPhrase{
-		noun: choiceString(items),
+		noun: randWord(items),
 	}
-	var chance int = 75
-	if randBoolChance(chance) {
-		ph.of = choiceString(abstractStuff)
+	if randChance(chance) {
+		ph.of = randWord(abstractStuff)
 		chance /= 4
 	}
-	if randBoolChance(chance) {
-		ph.qualifier = choiceString(adjectives)
+	if randChance(chance) {
+		ph.qualifier = randWord(adjectives)
 	}
 
 	return ph
@@ -151,14 +151,14 @@ func (ph verbPhrase) String() string {
 		str = fmt.Sprintf("%s to the %s", str, ph.dat)
 	}
 	if ph.instr != (nounPhrase{}) {
-		if randBoolChance(75) {
+		if randChance(75) {
 			str = fmt.Sprintf("%s with the %s", str, ph.instr)
 		} else {
 			str = fmt.Sprintf("with the %s, %s", ph.instr, str)
 		}
 	}
 	if ph.loc != (nounPhrase{}) {
-		if randBoolChance(75) {
+		if randChance(75) {
 			str = fmt.Sprintf("%s %s the %s", str, ph.locPrep, ph.loc)
 		} else {
 			str = fmt.Sprintf("%s the %s, %s", ph.locPrep, ph.loc, str)
@@ -170,24 +170,24 @@ func (ph verbPhrase) String() string {
 func randActorVerbPhrase(nom nounPhrase) verbPhrase {
 	var verb, locPrep, adverb string
 	var acc, dat, instr, loc nounPhrase
-	var chance int = 50
+	var chance float32 = 50.0
 
-	if randBoolChance(50) {
-		verb = choiceString(transVerbs)
+	if randChance(50) {
+		verb = randWord(transVerbs)
 		for ok := true; ok; ok = (acc == nom) {
-			acc = randNounPhrase()
+			acc = randActorPhrase()
 		}
 	} else {
-		verb = choiceString(intransVerbs)
+		verb = randWord(intransVerbs)
 	}
 	// if randBoolChance(chance) {
 	// 	for ok := true; ok; ok = dat == nom || dat == acc {
 	// 		dat = randNounPhrase()
 	// 	}
 	// }
-	if randBoolChance(chance) {
-		if randBoolChance(25) {
-			loc = randNounPhrase()
+	if randChance(chance) {
+		if randChance(25) {
+			loc = randActorPhrase()
 			locPrep = "by"
 		} else {
 			loc = randLocationPhrase()
@@ -195,17 +195,17 @@ func randActorVerbPhrase(nom nounPhrase) verbPhrase {
 		}
 		chance /= 2
 	}
-	if randBoolChance(chance) {
-		if randBoolChance(50) {
+	if randChance(chance) {
+		if randChance(50) {
 			for ok := true; ok; ok = instr == nom || instr == acc || instr == dat {
-				instr = randNounPhrase()
+				instr = randActorPhrase()
 			}
 		} else {
 			instr = randItemPhrase()
 		}
 	}
-	if randBoolChance(25) {
-		adverb = choiceString(adverbs)
+	if randChance(25) {
+		adverb = randWord(adverbs)
 	}
 	return verbPhrase{verb, nom, acc, dat, instr, loc, locPrep, adverb}
 }
@@ -213,24 +213,24 @@ func randActorVerbPhrase(nom nounPhrase) verbPhrase {
 func randVerbPhraseFromContent(localActors, localItems, localLocations []nounPhrase) verbPhrase {
 	var verb, locPrep, adverb string
 	var nom, acc, dat, instr, loc nounPhrase
-	var chance int = 50
+	var chance float32 = 50.0
 
 	nom = choice(localActors)
-	if randBoolChance(50) {
-		verb = choiceString(transVerbs)
-		for ok := true; ok; ok = (acc == nom) {
+	if randChance(50) && len(localActors) > 1 {
+		verb = randWord(transVerbs)
+		for ok := true; ok; ok = acc == nom {
 			acc = choice(localActors)
 		}
 	} else {
-		verb = choiceString(intransVerbs)
+		verb = randWord(intransVerbs)
 	}
 	// if randBoolChance(chance) {
 	// 	for ok := true; ok; ok = dat == nom || dat == acc {
 	// 		dat = randNounPhrase()
 	// 	}
 	// }
-	if randBoolChance(chance) {
-		if randBoolChance(25) {
+	if randChance(chance) && len(localLocations) > 0 {
+		if randChance(25) && len(localActors) > 2 {
 			loc = choice(localActors)
 			locPrep = "by"
 		} else {
@@ -239,22 +239,24 @@ func randVerbPhraseFromContent(localActors, localItems, localLocations []nounPhr
 		}
 		chance /= 2
 	}
-	if randBoolChance(chance) {
-		if randBoolChance(25) {
+	if randChance(chance / 2) {
+		if randChance(25) && len(localActors) > 2 {
 			for ok := true; ok; ok = instr == nom || instr == acc || instr == dat {
 				instr = choice(localActors)
 			}
-		} else {
+		} else if len(localItems) > 0 {
 			instr = choice(localItems)
+		} else {
+			instr = nounPhrase{}
 		}
 	}
-	if randBoolChance(25) {
-		adverb = choiceString(adverbs)
+	if randChance(0) {
+		adverb = randWord(adverbs)
 	}
 	return verbPhrase{verb, nom, acc, dat, instr, loc, locPrep, adverb}
 }
 
 func randVerbPhrase() verbPhrase {
-	var actor nounPhrase = randNounPhrase()
+	var actor nounPhrase = randActorPhrase()
 	return randActorVerbPhrase(actor)
 }
