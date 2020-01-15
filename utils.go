@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"math/rand"
 	"unicode"
 )
@@ -38,4 +39,16 @@ func randChance(n float32) bool {
 
 func capitalize(s string) string {
 	return string(string(unicode.ToUpper(rune(s[0]))) + s[1:])
+}
+
+func joinNounPhrases(phrases []nounPhrase, sep string) string {
+	ret := ""
+	for i, ph := range phrases {
+		if i == 0 {
+			ret += ph.String()
+		} else {
+			ret += fmt.Sprintf("%s%s", sep, ph)
+		}
+	}
+	return ret
 }
